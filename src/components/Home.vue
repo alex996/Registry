@@ -13,10 +13,10 @@
             <div class="column is-8">
               <div class="panel">
                 <div class="panel-heading">
-                  Add a new person entry
+                  New Person Entry
                 </div>
                 <div class="panel-block">
-                  <form>
+                  <form @submit.prevent="addPerson">
                     <div class="columns">
                       <div class="column is-3">
                         <div class="field">
@@ -59,7 +59,7 @@
                         </div>
                       </div>
                       <div class="column is-1 has-mt-auto">
-                        <button class="button is-primary">Add</button>
+                        <button type="submit" class="button is-primary">Add</button>
                       </div>
                     </div>              
                   </form>
@@ -69,7 +69,7 @@
             <div class="column is-8">
               <div class="panel">
                 <div class="panel-heading">
-                  All person records
+                  Person Records
                 </div>
                 <div class="panel-block">
                   <table class="table is-bordered">
@@ -80,6 +80,7 @@
                         <th>Age</th>
                         <th>City</th>
                         <th>Income</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -89,9 +90,21 @@
                         <td>{{ person.age }}</td>
                         <td>{{ person.city }}</td>
                         <td>{{ person.income }}</td>
+                        <td>
+                          <button class="button is-small is-info">
+                            <span class="icon is-small">
+                              <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                          <button class="button is-small is-danger" @click="removePerson(person)">
+                            <span class="icon is-small">
+                              <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        </td>
                       </tr>
                       <tr v-show="! persons.length">
-                        <td colspan="5">
+                        <td colspan="6">
                           <i>There's nothing here...</i>
                         </td>
                       </tr>
@@ -128,7 +141,17 @@ export default {
   },
   methods: {
     addPerson() {
-
+      db.ref('persons').push(this.newPerson)
+      this.newPerson = {
+        firstName: '',
+        lastName: '',
+        age: 0,
+        city: '',
+        income: 0
+      }
+    },
+    removePerson(person) {
+      db.ref('persons').child(person['.key']).remove()
     }
   }
 }

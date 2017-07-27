@@ -16,5 +16,6 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '../node_modules/bulma/bulma.sass'
+  @import '../node_modules/bulma/bulma.sass';
+  @import '../node_modules/font-awesome/css/font-awesome.css';
 </style>
