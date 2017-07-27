@@ -74,6 +74,7 @@
                 <table class="table is-bordered">
                   <thead>
                     <tr>
+                      <th>Created At</th>
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Age</th>
@@ -85,6 +86,9 @@
                   <tbody>
                     <tr v-for="person in persons">
                       <template v-if="person === oldPerson">
+                        <td>
+                          {{ oldPerson.createdAt | createdAt }}
+                        </td>
                         <td>
                           <input class="input" placeholder="First Name" v-model="oldPerson.firstName" required>
                         </td>
@@ -101,7 +105,7 @@
                           <input class="input" placeholder="Income" v-model="oldPerson.income" type="number" required>
                         </td>
                         <td class="has-width-100">
-                          <button class="button is-small is-success" @click="savePerson(oldPerson)">
+                          <button class="button is-small is-success" @click="savePerson()">
                             <span class="icon is-small">
                               <i class="fa fa-check" aria-hidden="true"></i>
                             </span>
@@ -114,6 +118,7 @@
                         </td>
                       </template>
                       <template v-else>
+                        <td>{{ person.createdAt | createdAt }}</td>
                         <td>{{ person.firstName }}</td>
                         <td>{{ person.lastName }}</td>
                         <td>{{ person.age }}</td>
@@ -134,7 +139,7 @@
                       </template>                      
                     </tr>
                     <tr v-show="! persons.length">
-                      <td colspan="6">
+                      <td colspan="7">
                         <i>There's nothing here...</i>
                       </td>
                     </tr>
@@ -150,7 +155,10 @@
 </template>
 
 <script>
+import moment from 'moment'
 import db from '../db'
+
+window.moment = moment
 
 export default {
   name: 'home',
@@ -171,7 +179,14 @@ export default {
   },
   methods: {
     addPerson() {
-      db.ref('persons').push(this.newPerson)
+      db.ref('persons').push({
+        firstName: this.newPerson.firstName,
+        lastName: this.newPerson.lastName,
+        age: this.newPerson.age,
+        city: this.newPerson.city,
+        income: this.newPerson.income,
+        createdAt: Date.now()
+      })
       this.newPerson = {
         firstName: '',
         lastName: '',
@@ -183,18 +198,24 @@ export default {
     editPerson(person) {
       this.oldPerson = person;
     },
-    savePerson(person) {
-      db.ref('persons/' + person['.key']).set({
-        firstName: person.firstName,
-        lastName: person.lastName,
-        age: person.age,
-        city: person.city,
-        income: person.income
+    savePerson() {
+      db.ref('persons/' + this.oldPerson['.key']).set({
+        firstName: this.oldPerson.firstName,
+        lastName: this.oldPerson.lastName,
+        age: this.oldPerson.age,
+        city: this.oldPerson.city,
+        income: this.oldPerson.income,
+        createdAt: this.oldPerson.createdAt,
       })
       this.oldPerson = null;
     },
     removePerson(person) {
       db.ref('persons').child(person['.key']).remove()
+    }
+  },
+  filters: {
+    createdAt(timestamp) {
+      return moment(timestamp).format('DD/MM/YYYY HH:mm')
     }
   }
 }

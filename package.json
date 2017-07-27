@@ -13,6 +13,7 @@
     "bulma": "^0.4.4",
     "firebase": "^4.1.5",
     "font-awesome": "^4.7.0",
+    "moment": "^2.18.1",
     "vue": "^2.3.3",
     "vuefire": "^1.4.3"
   },
