@@ -9,33 +9,96 @@
           Keeping record of the US census since the dawn of time.
         </h2>
         <div class="container">
-          <div class="columns">
+          <div class="columns is-multiline">
             <div class="column is-8">
-              <table class="table is-bordered">
-                <thead>
-                  <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Age</th>
-                    <th>City</th>
-                    <th>Income</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="individual in individuals">
-                    <td>{{ individual.firstName }}</td>
-                    <td>{{ individual.lastName }}</td>
-                    <td>{{ individual.age }}</td>
-                    <td>{{ individual.city }}</td>
-                    <td>{{ individual.income }}</td>
-                  </tr>
-                  <tr v-show="! individuals.length">
-                    <td colspan="5">
-                      There's nothing here...
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="panel">
+                <div class="panel-heading">
+                  Add a new person entry
+                </div>
+                <div class="panel-block">
+                  <form>
+                    <div class="columns">
+                      <div class="column is-3">
+                        <div class="field">
+                          <label class="label">First Name</label>
+                          <div class="control">
+                            <input class="input" placeholder="First Name" v-model="newPerson.firstName" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-3">
+                        <div class="field">
+                          <label class="label">Last Name</label>
+                          <div class="control">
+                            <input class="input" placeholder="Last Name" v-model="newPerson.lastName" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-1">
+                        <div class="field">
+                          <label class="label">Age</label>
+                          <div class="control">
+                            <input class="input" placeholder="First Name" v-model="newPerson.age" type="number" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-2">
+                        <div class="field">
+                          <label class="label">City</label>
+                          <div class="control">
+                            <input class="input" placeholder="City" v-model="newPerson.city" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-2">
+                        <div class="field">
+                          <label class="label">Income</label>
+                          <div class="control">
+                            <input class="input" placeholder="First Name" v-model="newPerson.income" type="number" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="column is-1 has-mt-auto">
+                        <button class="button is-primary">Add</button>
+                      </div>
+                    </div>              
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="column is-8">
+              <div class="panel">
+                <div class="panel-heading">
+                  All person records
+                </div>
+                <div class="panel-block">
+                  <table class="table is-bordered">
+                    <thead>
+                      <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                        <th>City</th>
+                        <th>Income</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="person in persons">
+                        <td>{{ person.firstName }}</td>
+                        <td>{{ person.lastName }}</td>
+                        <td>{{ person.age }}</td>
+                        <td>{{ person.city }}</td>
+                        <td>{{ person.income }}</td>
+                      </tr>
+                      <tr v-show="! persons.length">
+                        <td colspan="5">
+                          <i>There's nothing here...</i>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>               
             </div>
           </div>          
         </div>
@@ -50,11 +113,29 @@ import db from '../db'
 export default {
   name: 'home',
   firebase: {
-    individuals: db.ref('individuals')
+    persons: db.ref('persons')
+  },
+  data() {
+    return {
+      newPerson: {
+        firstName: '',
+        lastName: '',
+        age: 0,
+        city: '',
+        income: 0
+      }
+    }
+  },
+  methods: {
+    addPerson() {
+
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+  .has-mt-auto {
+    margin-top: auto;
+  }
 </style>
