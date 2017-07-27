@@ -163,7 +163,7 @@ window.moment = moment
 export default {
   name: 'home',
   firebase: {
-    persons: db.ref('persons')
+    persons: db.ref('persons').orderByChild('createdAt')
   },
   data() {
     return {
