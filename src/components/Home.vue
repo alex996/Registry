@@ -89,7 +89,7 @@
                           <input class="input" placeholder="First Name" v-model="oldPerson.firstName" required>
                         </td>
                         <td>
-                          <input class="input" placeholder="Last Name" v-model="oldPerson.last" required>
+                          <input class="input" placeholder="Last Name" v-model="oldPerson.lastName" required>
                         </td>
                         <td>
                           <input class="input" placeholder="Age" v-model="oldPerson.age" type="number" required>
